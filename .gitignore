@@ -1,6 +1,9 @@
 # 프로젝트별 산출물 — 디자이너가 새로 시작할 때 비어 있는 상태로 둠
 project/
 
+# 프로젝트별 검증/유틸 (예: KOSPI 크롤 테스트 등)
+scripts/
+
 # 로컬/의존성
 node_modules/
 .env
@@ -8,5 +11,3 @@ node_modules/
 *.log
 .DS_Store
 
-# scripts 테스트 시 생성 파일
-scripts/debug-naver-snippet.html
