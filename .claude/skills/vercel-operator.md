@@ -120,10 +120,12 @@ vercel whoami
    vercel link --cwd ../<repo-name> --yes
    vercel deploy --cwd ../<repo-name> --prod
    ```
+   배포 출력에서 Production URL을 확인해 둔다.
 
 4. **Vercel × GitHub 연동 — PR Preview 활성화 (필수)**
 
-   이 단계를 해야 PR을 올릴 때마다 Vercel이 자동으로 Preview URL을 달아줍니다.
+   > **이 단계를 건너뛰면 8단계에서 PR을 올려도 Preview URL이 생성되지 않습니다.**
+   > 디자이너가 결과물을 미리 볼 수 없게 되므로 반드시 완료해야 합니다.
 
    아래 순서대로 진행하세요. (클릭 4번으로 끝납니다)
 
@@ -138,14 +140,20 @@ vercel whoami
    >
    > "Connected to GitHub" 메시지가 뜨면 완료입니다!
 
-   완료 후 채팅에 "연동 완료"라고 알려 주세요. 제가 확인하고 다음 단계로 넘어갑니다.
+   **연동 확인 방법**: Settings → Git 탭에 `<username>/<repo-name>`이 표시되면 성공.
+
+   완료 후 채팅에 "연동 완료"라고 알려 주세요.
 
    > 막히면 화면 캡처를 보내 주세요!
 
-5. **완료 처리**
-   - GitHub URL: `https://github.com/<username>/<repo-name>`
-   - Vercel URL: 배포 후 출력된 Production URL
-   - 두 URL을 `project/info.md`에 반영
+5. **완료 처리 — `project/info.md`에 즉시 저장**
+
+   연동 완료 확인 후 AI가 직접 `project/info.md`에 저장한다:
+   - `project-name`: 입력받은 프로젝트 이름
+   - `github-url`: `https://github.com/<username>/<repo-name>`
+   - `vercel-url`: 배포 출력에서 확인한 Production URL
+
+   저장 후 디자이너에게: "info.md에 저장했어요. 2번 단계로 넘어갑니다."
 
 ---
 
@@ -155,3 +163,4 @@ vercel whoami
 - **수동 진행 중 막힘**: 화면 캡처를 채팅에 보내 주시면 다음 단계를 안내합니다.
 - **GitHub 권한 이슈**: Configure/Authorize 화면이 나오면 승인 후 다시 진행.
 - **레포가 이미 있음**: 다른 이름으로 재시도하거나 기존 레포를 사용할지 확인.
+- **Vercel Preview URL이 8단계에서 안 생김**: 4번(Vercel×GitHub 연동)이 완료됐는지 확인. Settings → Git 탭에서 연동 여부를 확인하고 안 돼 있으면 다시 진행.

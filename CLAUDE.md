@@ -29,12 +29,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## 단계별 스킬 파일 — 반드시 읽고 따른다
+
+해당 stage에 진입하면 **스킬 파일을 먼저 읽은 뒤** 그 지침을 따라 실행한다. 스킬 파일보다 이 파일의 지침이 충돌할 경우 스킬 파일을 우선한다.
+
+| Stage | 진입 시 반드시 읽을 파일 |
+|-------|--------------------------|
+| 1 | `.claude/skills/vercel-operator.md` |
+| 6, 7 | `.claude/skills/db-architect.md` |
+| 8, 9 | `.claude/skills/coder.md` |
+| init · 단계 전환 · "지금 어디야?" | `.claude/skills/product-pm.md` |
+
+---
+
 ## 10단계 흐름 및 실행 방식
 
 | 단계 | 내용 | 실행 방식 |
 |------|------|-----------|
-| 1 | GitHub 레포 + Vercel 배포 | `gh repo create` + `vercel deploy` (또는 수동 안내) |
-| 2 | 프로젝트 정보 수집 | 채팅 수집 → `project/info.md` 업데이트 |
+| 1 | GitHub 레포 + Vercel 배포 | `gh repo create` + `vercel deploy` → URL 자동 저장 |
+| 2 | 프로젝트 정보 확인 | AI가 자동 저장한 info.md 디자이너가 확인 (수동 진행 시 URL 직접 입력) |
 | 3 | 시안 이미지 분석 | 이미지 직접 읽기 (멀티모달) → `project/screens/` 저장 |
 | 4 | PRD 생성 | 시안+기획 기반 작성 → `project/PRD.md` |
 | 5 | 필요 정보 수집 | 채팅 Q&A → `project/required-info.md` |
@@ -46,29 +59,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
-## 단계별 스킬 파일
+## 단계 되돌리기
 
-각 단계 진입 시 해당 스킬 파일을 읽고 그 지침을 따른다.
-
-| Stage | 스킬 파일 |
-|-------|-----------|
-| 1 | `.claude/skills/vercel-operator.md` |
-| 6, 7 | `.claude/skills/db-architect.md` |
-| 8, 9 | `.claude/skills/coder.md` |
-| 진행·오케스트레이션 (init, 단계 전환) | `.claude/skills/product-pm.md` |
+디자이너가 "N번으로 돌아가줘", "3번 다시 해줘", "PRD 수정하고 싶어" 같이 이전 단계 재실행을 요청하면:
+1. `project/state.md`의 `stage`를 해당 번호로 갱신한다.
+2. 해당 stage의 스킬 파일을 읽고 처음부터 다시 실행한다.
+3. 이미 만들어진 산출물(예: PRD.md)은 덮어쓰기 전에 "기존 내용을 덮어써도 될까요?"라고 확인한다.
 
 ---
 
 ## Stage별 핵심 지침
 
 ### Stage 1 — GitHub + Vercel
-상세 지침: `.claude/skills/vercel-operator.md`
+상세 지침: `.claude/skills/vercel-operator.md` **← 반드시 먼저 읽는다**
 ```bash
-gh auth status                          # 인증 확인
-gh repo create <name> --public --clone  # 레포 생성
-vercel link --yes && vercel deploy --prod  # Vercel 배포
+gh auth status
+gh repo create <name> --public
+git clone https://github.com/<username>/<name> ../<name>
+vercel link --cwd ../<name> --yes && vercel deploy --cwd ../<name> --prod
 ```
-완료 후 GitHub URL, Vercel URL → `project/info.md` 저장.
+완료 즉시 GitHub URL, Vercel URL, 프로젝트명 → `project/info.md`에 **AI가 직접 저장**.
+
+### Stage 2 — 프로젝트 정보 확인
+Stage 1을 AI가 직접 실행했다면 info.md가 이미 채워져 있다.
+- **자동 완료**: "info.md에 저장됐어요. 확인해 주세요." → 디자이너 확인 후 다음 단계.
+- **수동 진행한 경우**: 프로젝트명, GitHub URL, Vercel URL을 채팅으로 받아 info.md에 저장.
 
 ### Stage 3 — 시안 분석
 이미지를 Read 도구로 직접 읽는다. 텍스트 설명 없이 이미지만으로 화면 스펙 추출 가능.
@@ -80,7 +95,7 @@ vercel link --yes && vercel deploy --prod  # Vercel 배포
 - **개발자**: 데이터 전략 (후보 소스 2~3개, 난이도/리스크, 권장안, 캐시 전략 + TTL)
 
 ### Stage 7 — Supabase
-상세 지침: `.claude/skills/db-architect.md`
+상세 지침: `.claude/skills/db-architect.md` **← 반드시 먼저 읽는다**
 
 Supabase MCP 연결 시 DDL 직접 실행. 없으면 수동 안내:
 - SQL Editor에 `project/db-design.md` DDL 붙여넣기
@@ -88,28 +103,21 @@ Supabase MCP 연결 시 DDL 직접 실행. 없으면 수동 안내:
 - Vercel 환경변수: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ### Stage 8 — 직접 구현 (핵심)
-상세 지침: `.claude/skills/coder.md`
+상세 지침: `.claude/skills/coder.md` **← 반드시 먼저 읽는다**
 ```bash
-# 1. 클론
 gh repo clone <github-url> ../<project-name>
 git -C ../<project-name> checkout -b feature/ai-implementation
-
-# 2. 구현 순서
 # lib/supabase.ts → app/api/... → app/... (페이지·컴포넌트)
-
-# 3. 푸시 + PR
 git -C ../<project-name> add . && git commit -m "feat: AI implementation"
 git -C ../<project-name> push -u origin feature/ai-implementation
 gh pr create --repo <github-url> --title "AI Implementation" --base main
 ```
-
 **로깅 필수**: 크롤링/DB/API Route 전 구간에 console 로그. Vercel 로그에서 즉시 추적 가능해야 함.
 
 ### Stage 9 — 수정
-상세 지침: `.claude/skills/coder.md`
+상세 지침: `.claude/skills/coder.md` **← 반드시 먼저 읽는다**
 ```bash
 git -C ../<project-name> checkout feature/ai-implementation
-# 코드 수정 후
 git -C ../<project-name> add . && git commit -m "fix: <내용>" && git push
 ```
 
