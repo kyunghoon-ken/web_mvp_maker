@@ -10,6 +10,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## 오케스트레이터 규칙
+
+- **항상** `project/state.md`를 먼저 읽고 `stage`, `next`를 확인한 뒤, 해당 단계 액션을 실행한다.
+- 모든 입력·산출은 **`project/`** 아래 파일에만 반영한다. **`flow-guide.md`는 수정하지 않는다.**
+- 디자이너에게는 "채팅만 보면 된다"고 안내하고, 다음 액션은 `state.md`의 `next`와 flow-guide 해당 stage 안내를 조합해 말한다.
+- 단계가 완료되면 **매 단계 완료 시** `project/state.md`의 `stage`와 `next`를 갱신한다.
+- **stage 8 (AI 구현)**: target repo를 직접 클론하고 코드를 구현한다. 외부 AI를 거치지 않는다.
+
+---
+
 ## 시작 방법
 
 **항상 `project/state.md`를 먼저 읽는다.** `stage`와 `next`를 확인한 뒤 해당 단계 액션을 실행.
@@ -36,9 +46,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## 단계별 스킬 파일
+
+각 단계 진입 시 해당 스킬 파일을 읽고 그 지침을 따른다.
+
+| Stage | 스킬 파일 |
+|-------|-----------|
+| 1 | `.claude/skills/vercel-operator.md` |
+| 6, 7 | `.claude/skills/db-architect.md` |
+| 8, 9 | `.claude/skills/coder.md` |
+| 진행·오케스트레이션 (init, 단계 전환) | `.claude/skills/product-pm.md` |
+
+---
+
 ## Stage별 핵심 지침
 
 ### Stage 1 — GitHub + Vercel
+상세 지침: `.claude/skills/vercel-operator.md`
 ```bash
 gh auth status                          # 인증 확인
 gh repo create <name> --public --clone  # 레포 생성
@@ -56,12 +80,15 @@ vercel link --yes && vercel deploy --prod  # Vercel 배포
 - **개발자**: 데이터 전략 (후보 소스 2~3개, 난이도/리스크, 권장안, 캐시 전략 + TTL)
 
 ### Stage 7 — Supabase
+상세 지침: `.claude/skills/db-architect.md`
+
 Supabase MCP 연결 시 DDL 직접 실행. 없으면 수동 안내:
 - SQL Editor에 `project/db-design.md` DDL 붙여넣기
 - Project URL + anon key → `project/info.md`
 - Vercel 환경변수: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ### Stage 8 — 직접 구현 (핵심)
+상세 지침: `.claude/skills/coder.md`
 ```bash
 # 1. 클론
 gh repo clone <github-url> ../<project-name>
@@ -79,6 +106,7 @@ gh pr create --repo <github-url> --title "AI Implementation" --base main
 **로깅 필수**: 크롤링/DB/API Route 전 구간에 console 로그. Vercel 로그에서 즉시 추적 가능해야 함.
 
 ### Stage 9 — 수정
+상세 지침: `.claude/skills/coder.md`
 ```bash
 git -C ../<project-name> checkout feature/ai-implementation
 # 코드 수정 후
@@ -102,6 +130,7 @@ gh pr merge <pr-number> --repo <github-url> --merge
 | `project/db-design.md` | Supabase DDL |
 | `project/screens/` | 시안 이미지 |
 | `flow-guide.md` | 단계별 상세 지침 (수정 금지) |
+| `.claude/skills/` | 단계별 스킬 파일 |
 
 ---
 

@@ -1,11 +1,8 @@
----
-name: vercel-operator
-description: Handles stage 1 GitHub repo creation and Vercel deployment. Use when the user is at stage 1, says "1번 해줘", "자동으로 해줘", "배포", "Vercel", "GitHub 연동", "Deploy 어떻게 해요", or when stuck on the first step.
----
-
 # Vercel Operator (1번 배포)
 
 1단계 GitHub 레포 생성과 Vercel 배포를 담당한다. 자동 실행이 기본, 수동 안내는 fallback.
+
+**사용 시점**: stage 1일 때, "1번 해줘", "자동으로 해줘", "배포", "Vercel", "GitHub 연동", "Deploy 어떻게 해요", 또는 첫 단계에서 막혔을 때.
 
 ---
 

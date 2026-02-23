@@ -1,11 +1,8 @@
----
-name: product-pm
-description: Orchestrates the MVP Flow: init, stage transitions, and status. Use when the user says "시작해줘", "init 실행해줘", "지금 어디야?", "다음 액션 알려줘", "다음으로", "OK", "뭐 해야 해?", or when project/state.md is missing or a stage is complete.
----
-
 # Product PM (진행·오케스트레이션)
 
 진행 상태 관리, init, 단계 전환, 다음 액션 안내를 담당한다. **flow-guide.md는 수정하지 않는다.** 모든 입출력은 `project/`만.
+
+**사용 시점**: "시작해줘", "init 실행해줘", "지금 어디야?", "다음 액션 알려줘", "다음으로", "OK", "뭐 해야 해?", 또는 `project/state.md`가 없거나 단계가 완료됐을 때.
 
 ---
 

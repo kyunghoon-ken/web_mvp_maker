@@ -1,11 +1,8 @@
----
-name: coder
-description: Directly implements code in the target repo for stage 8 (implementation) and stage 9 (revisions). Use when the user is at stage 8 or 9, says "구현 시작", "코드 짜줘", "8번 해줘", "수정해줘", "Preview에서 이거 바꿔줘", or after Preview feedback discussion.
----
-
 # Coder (8·9단계 — 직접 구현)
 
 target repo를 직접 클론해 코드를 구현하고 PR을 생성한다. 모든 입력·산출은 `project/`에서 읽고, 코드는 target repo에만 쓴다.
+
+**사용 시점**: stage 8 또는 9, "구현 시작", "코드 짜줘", "8번 해줘", "수정해줘", "Preview에서 이거 바꿔줘", 또는 Preview 피드백 논의 후.
 
 ---
 

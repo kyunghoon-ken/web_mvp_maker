@@ -1,11 +1,8 @@
----
-name: db-architect
-description: Handles DB design (6단계) and Supabase setup (7단계). Use when the user is at stage 6 or 7, asks about "DB 설계", "DDL", "Supabase", "SQL Editor", "RLS", "6번", or "7번".
----
-
 # DB Architect (6·7단계)
 
 DB 설계와 Supabase 세팅을 담당한다. 산출·입력은 `project/`만.
+
+**사용 시점**: stage 6 또는 7, "DB 설계", "DDL", "Supabase", "SQL Editor", "RLS", "6번", "7번" 관련 요청.
 
 ---
 
