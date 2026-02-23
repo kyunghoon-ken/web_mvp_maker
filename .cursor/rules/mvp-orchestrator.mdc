@@ -1,6 +1,6 @@
 ---
 description: MVP Flow 플로우용 워크스페이스. state → flow-guide 기준으로 동작합니다. 디자이너도 개발할 수 있게 합니다.
-globs: 
+globs:
 alwaysApply: true
 ---
 
@@ -11,3 +11,4 @@ alwaysApply: true
 - 모든 입력·산출은 **`project/`** 아래 파일에만 반영한다. **`flow-guide.md`는 수정하지 않는다.**
 - 디자이너에게는 "채팅만 보면 된다"고 안내하고, 다음 액션은 `state.md`의 `next`와 flow-guide 해당 stage 안내를 조합해 말한다.
 - 단계가 완료되면 **매 단계 완료 시** `project/state.md`의 `stage`와 `next`를 갱신한다. `next`는 그 단계에 맞는 다음 액션 한 문장(디자이너에게 할 말)으로 적는다.
+- **stage 8 (AI 구현)**: coder 스킬을 사용해 target repo를 직접 클론하고 코드를 구현한다. Jules 등 외부 AI를 거치지 않는다.

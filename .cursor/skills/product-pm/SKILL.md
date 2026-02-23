@@ -15,7 +15,7 @@ description: Orchestrates the MVP Flow: init, stage transitions, and status. Use
 2. 채팅으로: "지금 **N번** (단계 이름) 단계예요." + `next` 문장 전달.
 3. state.md가 없으면: "아직 세팅 전이에요. 'init 실행해줘'라고 하시면 됩니다."
 
-**단계 이름**: 1 먼저 할 일, 2 프로젝트 정보, 3 프로젝트 스펙 정의, 4 Plan 생성 (및 검토), 5 필요한 정보 수집, 6 DB 설계, 7 Supabase 세팅, 8 Jules 요청, 9 피드백·수정, 10 Merge·운영
+**단계 이름**: 1 먼저 할 일, 2 프로젝트 정보, 3 프로젝트 스펙 정의, 4 Plan 생성 (및 검토), 5 필요한 정보 수집, 6 DB 설계, 7 Supabase 세팅, 8 AI 구현, 9 피드백·수정, 10 Merge·운영
 
 ---
 
@@ -23,11 +23,9 @@ description: Orchestrates the MVP Flow: init, stage transitions, and status. Use
 
 `init.md` "생성할 구조"대로 생성. **이미 project/ 또는 state.md가 있으면 덮어쓰지 말고** "이미 세팅되어 있어요. 현재 단계는 project/state.md를 확인해 주세요"라고만 안내.
 
-**생성**: project/, state.md(stage:1, next: 1번 안내), info.md, screens/, screens/README.md, PRD.md, required-info.md, db-design.md, jules-prompt.md(최소 템플릿), README.md.
+**생성**: project/, state.md(stage:1, next: 1번 안내), info.md, screens/, screens/README.md, PRD.md, required-info.md, db-design.md, README.md.
 
-**state.md 초기 next**: "먼저 1번을 진행해 주세요. Next.js Boilerplate Deploy → GitHub 연동 → 배포. 끝나면 프로젝트명과 URL을 알려 주세요."
-
-**jules-prompt.md 최소 템플릿**: 제목 "Jules용 복붙 프롬프트 (8·9단계)", 본문 "8단계에서 AI가 PRD와 기본 포맷을 머징해 이 파일을 채웁니다…", "수정 요청 시 (9단계)" 섹션 포함.
+**state.md 초기 next**: "먼저 1번을 진행해 주세요. '1번 자동으로 해줘'라고 하시면 제가 gh + vercel CLI로 직접 실행합니다. 수동으로 하실 경우 Next.js Boilerplate 링크에서 Deploy를 눌러 주세요."
 
 ---
 
@@ -35,11 +33,20 @@ description: Orchestrates the MVP Flow: init, stage transitions, and status. Use
 
 1. `project/state.md`에서 현재 `stage` 확인.
 2. flow-guide 해당 stage의 완료 조건 충족 여부 확인.
-3. state.md 갱신: `stage` → 다음 번호(1~10), `next` → 디자이너에게 할 말 한 문장 (flow-guide "AI 안내" 해당 stage 참고).
+3. state.md 갱신: `stage` → 다음 번호(1~10), `next` → 디자이너에게 할 말 한 문장.
 4. 갱신한 next 내용을 채팅으로 전달.
 
-**디자이너에게 할 말**: **단계 이름 + next 문장만** 전달한다. 테이블명, DDL, RLS, 산출물 파일 목록 등 상세는 채팅에 나열하지 않는다. (디자이너는 "다음에 뭘 하면 되는지"만 알면 됨.)
+**디자이너에게 할 말**: **단계 이름 + next 문장만** 전달한다. 테이블명, DDL, 산출물 파일 목록 등 상세는 채팅에 나열하지 않는다.
 
-**next 문구 참고**: 1→2 URL 알려주세요. 2→3 프로젝트 스펙 정의 (시안 이미지 첨부·한 줄 설명). 3→4 "기획서와 시안을 모두 제공해 주셨을까요? …" 4→5 "PRD 확인해 보시고 … 다음은 5번 필요한 정보 수집이에요." 5→6 필요한 정보 채팅으로 물어볼게요. **6→7**: flow-guide 7번 **"디자이너에게 할 말"** 문단 전체를 채팅으로 전달 (Supabase 단계별 안내). 7→8 Supabase URL·anon key 알려 주세요. 8→9 jules-prompt.md 블록 복사해 Jules에. 9→10 PR Preview 확인 후 수정 있으면 알려 주세요. 만족하면 10번 운영·배포로 안내. 10→ 운영·배포.
-
-flow-guide.md "AI 안내" 해당 stage 문단에서 정확한 문구를 가져와도 된다.
+**next 문구 참고**:
+- 0→1: "프로젝트 이름을 알려주세요 (영문 소문자 + 하이픈). 제가 GitHub 레포 생성과 Vercel 배포를 바로 진행합니다."
+- 1→2: "프로젝트명, GitHub URL, Vercel URL을 알려주세요."
+- 2→3: "시안 이미지를 채팅에 첨부해 주세요. 제가 직접 분석합니다."
+- 3→4: "기획서와 시안을 모두 제공해 주셨을까요? 모두 제공해 주셨다면 계획을 세워 드리겠습니다."
+- 4→5: "PRD 확인해 보시고 수정하거나 더 넣고 싶은 게 있으면 말해 주세요. 괜찮으시면 다음은 5번 필요한 정보 수집이에요."
+- 5→6: "필요한 정보를 채팅으로 물어볼게요."
+- 6→7: flow-guide 7번 수동 안내 문단 전체를 채팅으로 전달.
+- 7→8: "Supabase 세팅 완료됐어요. 이제 제가 직접 코드를 구현합니다. 잠시 기다려 주세요."
+- 8→9: "PR이 생성됐어요. Preview URL로 확인해 보세요. 수정하고 싶은 것이 있으면 저에게 말씀해 주세요."
+- 9→10: "만족스러우시면 '10번 Merge해줘'라고 하시면 제가 자동으로 반영합니다."
+- 10→: "Merge 완료! Vercel이 자동 배포합니다. 추가 개선이 있으면 언제든 말씀해 주세요."
