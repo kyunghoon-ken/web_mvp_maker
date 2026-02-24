@@ -1,0 +1,16 @@
+# 프로젝트별 산출물 — 디자이너가 새로 시작할 때 비어 있는 상태로 둠
+project/
+
+# 프로젝트별 검증/유틸 (예: KOSPI 크롤 테스트 등)
+scripts/
+
+# 로컬/의존성
+node_modules/
+.env
+.env.local
+*.log
+.DS_Store
+
+# Claude Code 로컬 세션 (권한 기록, 민감 정보 포함 가능)
+.claude/settings.local.json
+
