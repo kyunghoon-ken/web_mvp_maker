@@ -62,8 +62,9 @@
 | 디자이너 | 프로젝트 이름(영문 소문자 + 하이픈) 알려주기. 예: `my-portfolio` |
 | AI | GitHub 레포 생성, Next.js 보일러플레이트 설치, Vercel 배포 직접 실행 |
 
-> `gh`, `vercel` CLI가 없으면 AI가 직접 설치합니다.
+> `gh`, `vercel` CLI가 없으면 AI가 직접 설치합니다. Mac은 Homebrew도 함께 설치됩니다.
 > GitHub/Vercel 로그인은 브라우저 인증이 한 번 필요합니다 — AI가 터미널 여는 법부터 안내합니다.
+> `gh auth login` 실행 시 반드시 **"Login with a web browser"** 를 선택하세요. 토큰 직접 입력 방식은 사용하지 마세요.
 
 ---
 

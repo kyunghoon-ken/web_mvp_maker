@@ -13,48 +13,11 @@
 ### 사전 조건 확인 및 설치
 
 AI가 직접 아래 순서로 확인하고 설치까지 실행한다.
+로그인처럼 브라우저가 필요한 단계는 디자이너에게 안내한다.
 
-#### vercel CLI
-```bash
-which vercel || npm i -g vercel
-```
+#### 0. 터미널 여는 법 (처음이시라면 먼저 확인)
 
-#### gh CLI — 아키텍처 자동 감지 후 설치
-
-```bash
-uname -m   # arm64 = Apple Silicon / x86_64 = Intel Mac
-```
-
-**① Apple Silicon (arm64) + ARM Homebrew 있음** (`/opt/homebrew` 존재)
-```bash
-/opt/homebrew/bin/brew install gh
-```
-
-**② Apple Silicon (arm64) + ARM Homebrew 없음**
-GitHub Releases에서 arm64 zip을 직접 다운로드해 설치한다.
-```bash
-VER=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'][1:])")
-curl -fsSL "https://github.com/cli/cli/releases/download/v${VER}/gh_${VER}_macOS_arm64.zip" -o /tmp/gh_arm64.zip
-unzip -q /tmp/gh_arm64.zip -d /tmp/gh_arm64_dir
-```
-→ `sudo` 필요한 복사 명령은 직접 실행 불가이므로 채팅에 한 줄 전달:
-`sudo cp /tmp/gh_arm64_dir/gh_${VER}_macOS_arm64/bin/gh /usr/local/bin/gh`
-
-**③ Intel Mac (x86_64)**
-```bash
-/usr/local/bin/brew install gh
-```
-
-**④ Windows**
-터미널(cmd) 여는 법 안내 후 아래 명령어 전달:
-```
-winget install --id GitHub.cli
-```
-
-- **설치**: AI가 직접 실행, `sudo` 단계는 디자이너에게 한 줄 전달
-- **로그인**: 브라우저 인증이 필요해 한 번만 직접 실행해야 함. 아래 "터미널 여는 법"을 안내한 뒤 명령어를 전달한다.
-
-**터미널 여는 법 안내 (로그인 안내 시 같이 전달)**
+설치·로그인 명령어는 **터미널(Terminal)**에서 실행합니다. 검은 텍스트 창입니다.
 
 > **Mac 사용자**
 > 키보드에서 `Cmd(⌘) + Space`를 누르고 "터미널"을 입력한 뒤 Enter를 누르세요.
@@ -63,11 +26,56 @@ winget install --id GitHub.cli
 > **Windows 사용자**
 > 키보드에서 `Windows 키`를 누르고 "cmd"를 입력한 뒤 Enter를 누르세요.
 > 검은 창이 뜨면 아래 명령어를 한 줄씩 붙여넣고 Enter 누르세요.
-> (Windows에서 gh 설치가 안 됐으면 `winget install --id GitHub.cli` 먼저 실행)
 
-로그인은 아래 절차로 진행한다. 명령어를 전달한 뒤 각 단계별 선택지를 미리 안내해 디자이너가 당황하지 않게 한다.
+#### 1. Homebrew 설치 (Mac 전용 — 패키지 관리자)
 
-**gh auth login 절차**
+`brew` 명령어로 개발 도구를 쉽게 설치할 수 있습니다. 먼저 설치 여부를 확인한다.
+
+```bash
+which brew
+```
+
+없으면 디자이너에게 아래 명령어를 전달:
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+> 설치 중 Mac 로그인 비밀번호를 물어볼 수 있습니다. 입력해도 화면에 표시되지 않으니 그냥 치고 Enter.
+> 설치 완료 후 터미널에 PATH 설정 안내가 나오면 그대로 따라 실행하세요.
+
+Windows는 이 단계를 건너뛰고, gh 설치 시 `winget install --id GitHub.cli` 를 사용한다.
+
+#### 2. gh CLI 설치
+
+**Mac (Homebrew 설치 완료 후)**
+```bash
+brew install gh
+```
+
+**Windows**
+```
+winget install --id GitHub.cli
+```
+
+#### 3. vercel CLI 설치
+```bash
+npm i -g vercel
+```
+
+#### 4. GitHub 로그인 (gh auth login)
+
+> **⚠️ 반드시 "Login with a web browser"를 선택하세요**
+>
+> `gh auth login` 실행 시 인증 방식을 고르는 화면이 나옵니다.
+> **"Login with a web browser"만** 선택하세요.
+>
+> **토큰(PAT)을 직접 복사/붙여넣기 하는 방식은 절대 사용하지 마세요.**
+> - 토큰을 메모장·슬랙에 저장하면 분실·유출 위험
+> - 실수로 코드 파일에 붙여넣고 커밋하면 레포 전체 접근 키가 GitHub에 공개됨
+> - 브라우저 인증은 토큰이 화면에 노출되지 않아 안전합니다
+
+명령어를 전달하고, 각 단계별 선택지를 미리 안내해 디자이너가 당황하지 않게 한다.
+
 ```
 gh auth login
 ```
@@ -75,7 +83,7 @@ gh auth login
 1. "What account do you want to log into?" → **GitHub.com** 선택 후 Enter
 2. "What is your preferred protocol for Git operations?" → **HTTPS** 선택 후 Enter
 3. "Authenticate Git with your GitHub credentials?" → **Y** 입력 후 Enter
-4. "How would you like to authenticate GitHub CLI?" → **Login with a web browser** 선택 후 Enter
+4. "How would you like to authenticate GitHub CLI?" → **Login with a web browser** 선택 후 Enter ← **반드시 이것!**
 5. 화면에 8자리 코드가 뜨고 브라우저가 열림 → 브라우저에서 코드 입력 후 Authorize 클릭
 6. 터미널에 "Logged in as [아이디]" 뜨면 완료
 
